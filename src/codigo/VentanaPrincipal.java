@@ -44,6 +44,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         texto2 = new javax.swing.JTextPane();
         abrirArchivo = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -77,6 +78,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
 
+        jButton2.setText("Editar");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -91,7 +94,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(botonCrearArchivo)
                         .addGap(78, 78, 78)
-                        .addComponent(abrirArchivo))
+                        .addComponent(abrirArchivo)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton2))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel2)
@@ -99,7 +104,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                         .addComponent(nombreArchivoALeer, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(32, 32, 32)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(98, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 110, Short.MAX_VALUE)
                 .addComponent(texto2, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -113,7 +118,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                     .addComponent(nombreArchivoACrear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(botonCrearArchivo)
                     .addComponent(jLabel1)
-                    .addComponent(abrirArchivo))
+                    .addComponent(abrirArchivo)
+                    .addComponent(jButton2))
                 .addGap(27, 27, 27)
                 .addComponent(texto2, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26)
@@ -133,8 +139,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void botonCrearArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCrearArchivoActionPerformed
         //EN ESTE BOTON SE CREA EL ARCHIVO XML UNA VEZ SE ESCRIBE EN NOMBRE
         String nombre = nombreArchivoACrear.getText() + ".xml";
+
         try {
             BufferedWriter bw = new BufferedWriter(new FileWriter(nombre));
+
+            /*
             String prueba = "Esto es una prueba";
 
             bw.write("<prueba>");
@@ -147,7 +156,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             bw.write("</prueba>");
             bw.newLine();
 
-            bw.close();
+            bw.close();*/
         } catch (IOException ex) {
             System.out.println("error");
         }
@@ -177,8 +186,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         //EN ESTE METODO ABRIMOS UN ARCHIVO YA CREADO CON UN FILE CHOOSER
         JFileChooser abrirFile = new JFileChooser();
         int archSeleccionado = abrirFile.showOpenDialog(texto2);
+        File f = abrirFile.getSelectedFile();
         if (archSeleccionado == abrirFile.APPROVE_OPTION) {
-            texto2.setText("Lo ha abierto");
+            //texto2.setText("Lo ha abierto");
+            leerUnArchivoAlAbrirlo(f.getName());
         }
     }//GEN-LAST:event_abrirArchivoActionPerformed
 
@@ -221,10 +232,30 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton abrirArchivo;
     private javax.swing.JButton botonCrearArchivo;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JTextField nombreArchivoACrear;
     private javax.swing.JTextField nombreArchivoALeer;
     private javax.swing.JTextPane texto2;
     // End of variables declaration//GEN-END:variables
+
+    private void leerUnArchivoAlAbrirlo(String nombre) {
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(nombre));
+
+            String linea = br.readLine();
+            String todo = "";
+            while (linea != null) {
+                todo = todo + linea + "\n";
+                texto2.setText(todo);
+                linea = br.readLine();
+            }
+
+        } catch (FileNotFoundException ex) {
+            System.out.println("Fichero no encontrado");
+        } catch (IOException ex) {
+            System.out.println("Error");
+        }
+    }
 }
