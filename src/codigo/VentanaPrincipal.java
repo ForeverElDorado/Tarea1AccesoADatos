@@ -227,7 +227,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             editarTexto();
             infoConfirmacion.setText("Cambios guardados con exito.");
         } else {
-            infoConfirmacion.setText("No hay ningun archivo abierto. Pulse Guardar Como.");
+            infoConfirmacion.setText("No hay ningun archivo abierto. Pulse Guardar Como/Abrir.");
         }
 
 
@@ -239,14 +239,16 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         //Metodo crea el archivo
         JFileChooser guardarArchivoComo = new JFileChooser();
         guardarArchivoComo.showSaveDialog(guardarArchivoComo);
-
         File archivoAGuardar = guardarArchivoComo.getSelectedFile();
-        if (archivoAGuardar != null) {
+        if (archivoAGuardar.exists()) {
+            infoConfirmacion.setText("Aqui opciones");
+        } else {
             try (FileWriter fw = new FileWriter(archivoAGuardar + ".xml")) {
                 fw.write(texto2.getText());
                 infoConfirmacion.setText("Archivo creado y guardado correctamente.");
             } catch (Exception ex) {
                 infoConfirmacion.setText("Error");
+
             }
         }
         //Metodo lee el texto
